@@ -88,7 +88,7 @@ Conclusion
 ~~~~~~~~~~
 
 Even if we don't show a in-depth comparaison, you can understand how it's easier
-to create Kivy properties and use it than the standard one. See the next chapter
+to create Kivy properties and use them than the standard ones. See the next chapter
 to see how to use them :)
 
 
@@ -136,8 +136,8 @@ If you created the class yourself, you can use the 'on_<propname>' callback::
 
 .. warning::
 
-    Be careful with 'on_<propname>'. If you are creating a such callback on a
-    property you are inherit, you must not forget to call the possible subclass
+    Be careful with 'on_<propname>'. If you are creating such a callback on a
+    property you are inheriting, you must not forget to call the possible subclass
     function too.
 
 
