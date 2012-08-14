@@ -97,10 +97,10 @@ class ImageData(object):
         return len(self.mipmaps) > 1
 
     def __repr__(self):
-        return '<ImageData width=%d height=%d fmt=%s ' \
-               'source=%r with %d images>' % (
-                self.width, self.height, self.fmt,
-                self.source, len(self.mipmaps))
+        return ('<ImageData width=%d height=%d fmt=%s '
+                'source=%r with %d images>' % (
+                    self.width, self.height, self.fmt,
+                    self.source, len(self.mipmaps)))
 
     def add_mipmap(self, level, width, height, data):
         '''Add a image for a specific mipmap level.
@@ -569,7 +569,10 @@ class Image(EventDispatcher):
         if image:
             # we found an image, yeah ! but reset the texture now.
             self.image = image
-            if not image.keep_data and self._keep_data:
+            # if image.__class__ is core image then it's a texture
+            # from atlas or other sources and has no data so skip
+            if (image.__class__ != self.__class__ and
+                not image.keep_data and self._keep_data):
                 self.remove_from_cache()
                 self._filename = ''
                 self._set_filename(value)
@@ -659,7 +662,7 @@ class Image(EventDispatcher):
         assert data.fmt in ImageData._supported_fmts
         size = 3 if data.fmt in ('rgb', 'bgr') else 4
         index = y * data.width * size + x * size
-        raw = data.data[index:index+size]
+        raw = data.data[index:index + size]
         color = map(lambda c: ord(c) / 255.0, raw)
 
         # conversion for BGR->RGB, BGR->RGBA format
