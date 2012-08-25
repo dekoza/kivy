@@ -12,12 +12,11 @@ The *Properties* classes are used when you create a
 Kivy's property classes support:
 
     Value Checking / Validation
-        When you assign a new value to a property, the value is checked to pass
-        some constraints implemented in the class. I.e., validation is
-        performed. For example, an :class:`OptionProperty` will make sure that
-        the value is in a predefined list of possibilities.
-        A :class:`NumericProperty` will check that your value is a numeric type,
-        i.e. int, float, etc.
+        When you assign a new value to a property, the value is checked to
+        pass constraints implemented in the class such as validation. For
+        example, validation for :class:`OptionProperty` will make sure that
+        the value is in a predefined list of possibilities. Validation for
+        :class:`NumericProperty` will check that your value is a numeric type.
         This prevents many errors early on.
 
     Observer Pattern
@@ -25,37 +24,37 @@ Kivy's property classes support:
         You can bind your own function as a callback to changes of a
         :class:`Property`. If, for example, you want a piece of code to be
         called when a widget's :class:`~kivy.uix.widget.Widget.pos` property
-        changes, you can :class:`~kivy.event.EventDispatcher.bind` a function to
-        it.
+        changes, you can :class:`~kivy.event.EventDispatcher.bind` a function
+        to it.
 
     Better Memory Management
         The same instance of a property is shared across multiple widget
         instances.
 
-Comparaison Python / Kivy
--------------------------
+Comparison Python / Kivy
+------------------------
 
 Basic example
 ~~~~~~~~~~~~~
 
-As an example, let's see some comparaison between Python and Kivy properties.
-Let's create a Python class with 'a' as a float::
+Let's compare Python and Kivy properties by creating a Python class with 'a'
+as a float::
 
     class MyClass(object):
-        def __init__(self, a=1):
+        def __init__(self, a=1.0):
             super(MyClass, self).__init__()
             self.a = a
 
 With Kivy, you can do::
 
     class MyClass(EventDispatcher):
-        a = NumericProperty(1)
+        a = NumericProperty(1.0)
 
 
 Value checking
 ~~~~~~~~~~~~~~
 
-If you wanted to add some check like a minimum / maximum value allowed for a
+If you wanted to add a check such a minimum / maximum value allowed for a
 property, here is a possible implementation in Python::
 
     class MyClass(object):
@@ -74,8 +73,8 @@ property, here is a possible implementation in Python::
             self._a = a
         a = property(_get_a, _set_a)
 
-The disadvantage is you have to do that work yourself. And it start to be
-complex if you have lot of properties.
+The disadvantage is you have to do that work yourself. And it becomes
+laborious and complex if you have many properties.
 With Kivy, you can simplify like this::
 
     class MyClass(EventDispatcher):
@@ -87,18 +86,17 @@ That's all!
 Conclusion
 ~~~~~~~~~~
 
-Even if we don't show a in-depth comparaison, you can understand how it's easier
-to create Kivy properties and use them than the standard ones. See the next chapter
-to see how to use them :)
+Kivy properties are easier to use than the standard ones. See the next chapter
+for examples of how to use them :)
 
 
 Observe Properties changes
 --------------------------
 
 As we said in the beginning, Kivy's Properties implement the `Observer pattern
-<http://en.wikipedia.org/wiki/Observer_pattern>`_. That's mean you can
-:meth:`~kivy.event.EventDispatcher.bind` to a property, and have your own
-callback called when the value change.
+<http://en.wikipedia.org/wiki/Observer_pattern>`_. That means you can
+:meth:`~kivy.event.EventDispatcher.bind` to a property and have your own
+function called when the value changes.
 
 Multiple ways are available to observe the changes.
 
@@ -118,10 +116,10 @@ class::
     ins = MyClass()
     ins.bind(a=callback)
 
-    # at this point, any change to the a property will call your callback
-    ins.a = 5 # callback called
-    ins.a = 5 # callback not called, because the value didnt change
-    ins.a = -1 # callback called
+    # At this point, any change to the a property will call your callback.
+    ins.a = 5    # callback called
+    ins.a = 5    # callback not called, because the value didnt change
+    ins.a = -1   # callback called
 
 Observe using 'on_<propname>'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -137,7 +135,7 @@ If you created the class yourself, you can use the 'on_<propname>' callback::
 .. warning::
 
     Be careful with 'on_<propname>'. If you are creating such a callback on a
-    property you are inheriting, you must not forget to call the possible subclass
+    property you are inherit, you must not forget to call the subclass
     function too.
 
 
@@ -162,20 +160,19 @@ cdef class Property:
     the observer list and storage initialisation. This class should not be
     directly instantiated.
 
-    By default, a :class:`Property` always take a default value::
+    By default, a :class:`Property` always takes a default value::
 
         class MyObject(Widget):
 
             hello = Property('Hello world')
 
-    The default value must be a value that agreed about the Property type. For
+    The default value must be a value that agrees with the Property type. For
     example, you can't set a list to a :class:`StringProperty`, because the
     StringProperty will check the default value.
 
-    None is a special case: you can set the default value of a Property to None,
-    but you can't set None to a property afterwise.
-    If you really want to do that, you must declare the Property with
-    `allownone=True`::
+    None is a special case: you can set the default value of a Property to
+    None, but you can't set None to a property afterward.  If you really want
+    to do that, you must declare the Property with `allownone=True`::
 
         class MyObject(Widget):
 
@@ -832,8 +829,8 @@ cdef class ReferenceListProperty(Property):
 cdef class AliasProperty(Property):
     '''Create a property with a custom getter and setter.
 
-    If you didn't find a Property class that fits to your needs, you can still
-    create Python getters and setters and create a property with both of them.
+    If you don't find a Property class that fits to your needs, you can make
+    your own by creating custom Python getter and setter methods.
 
     Example from kivy/uix/widget.py::
 
